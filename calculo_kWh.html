@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="container-sm">
+        <h1>Calcular</h1>
+        <form class="row gy-0 gx-3 align-items-center">
+
+            <div class="mb-3 " id="lok">
+                <label for="lb_qtl_painel" class="form-label">Quantidade de painel solar</label>
+                <input type="text" class="form-control" id="lb_qtl_painel" aria-describedby="lb_qtl_painelHelp">
+                <div id="lb_qtl_painelHelp" class="form-text">Digite a quantidade de painel solar.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="lb_potn" class="form-label">Potencia do painel solar</label>
+                <input type="text" class="form-control" id="lb_potn" aria-describedby="lb_potnHelp">
+                <div id="lb_potnHelp" class="form-text">Digite a potencia do painel em (W).</div>
+            </div>
+
+            <div class="mb-3" id="lok2">
+                <label for="lb_con_mes" class="form-label">Consumo mensal (kWh/mês)</label>
+                <input type="text" class="form-control" id="lb_con_mes" aria-describedby="lb_con_mesHelp">
+                <div id="lb_con_mesHelp" class="form-text">Digite a media do consumo do mês em kWh/mês.</div>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" value="" id="check">
+                <label class="form-check-label" for="check">
+                  Caucular kWh de varias placas solares
+                </label>
+              </div>
+            <p id="resut_total"></p>
+            <p id="resut_total1"></p>
+            <button type="button" class="btn btn-secondary mb-3" id="btn_start">Calcular</button>
+            <button type="button" class="btn btn-secondary" id="btn_clean">Limpar</button>
+        </form>
+    </div>
+</body>
+</html>
+
+<script>
+    let hora_dia = 5.04
+    let eficiencia = 0.75
+    let on = true
+    let quant_painel = 1
+
+    let lb_potn = document.getElementById('lb_potn')
+    let lb_con_mes = document.getElementById('lb_con_mes')
+    let resut_total = document.getElementById('resut_total')
+    let btn_start = document.getElementById('btn_start')
+    let btn_clean = document.getElementById('btn_clean')
+    let lb_qtl_painel = document.getElementById('lb_qtl_painel')
+    let lok = document.getElementById('lok')
+    let lok2 = document.getElementById('lok2')
+    let check = document.getElementById('check')
+    
+    lok.setAttribute('style','display:none')
+
+    check.addEventListener('click',()=>{
+
+        if (on == true){
+
+            lok.setAttribute('style','display:block')
+            lok2.setAttribute('style','display:none')
+            on = false
+        }else{
+
+            lok.setAttribute('style','display:none')
+            lok2.setAttribute('style','display:block')
+            on = true
+        }
+    })
+
+    btn_start.addEventListener('click',()=>{
+
+
+
+        if (on == false){
+            quant_painel = lb_qtl_painel.value
+        }else{
+            quant_painel = 1
+        }
+
+        let cons_dia = lb_con_mes.value / 30
+        
+        let resunt_p = (quant_painel*((lb_potn.value * hora_dia)/1000))
+
+        let resunt_dia = resunt_p * eficiencia
+        let resunt_mes = 30 * resunt_dia
+        
+        let result_quant_pl = cons_dia / resunt_dia
+
+        if (on == false){
+            resut_total.innerHTML = resunt_dia.toFixed(2) + ' kWh/dia'
+            resut_total1.innerHTML = resunt_mes.toFixed(2) + ' kWh/mês'
+        }else{
+            resut_total.innerHTML = result_quant_pl.toFixed(0) + ' Placas'
+        }
+
+    })
+
+    btn_clean.addEventListener('click',()=>{
+        lb_potn.value = ''
+        lb_con_mes.value = ''
+        resut_total.innerHTML = ''
+        resut_total1.innerHTML = ''
+        lb_qtl_painel.value = ''
+        cons_dia = ''
+        resunt_p = ''
+        resunt_dia = ''
+        resunt_mes = ''
+        result_quant_pl = ''
+        
+    })
+    
+
+</script>
